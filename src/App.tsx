@@ -1,7 +1,6 @@
 import './App.css'
 
 function App() {
-
   const regalos : string[] = ["Medias", "Zapatillas", "Teclado"]
 
   return (
