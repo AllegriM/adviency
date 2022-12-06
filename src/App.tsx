@@ -4,54 +4,53 @@ import TrashIcon from "./TrashIcon"
 
 function App() {
 
-  const [gifts, setGifts] = useState<string[]>(["Fernet", "Copa del Mundo", "Birra"])
-
+  const [gifts, setGifts] = useState<string[]>(["Fernet", "Vitel Tone", "Coca"])
   const [giftName, setGiftName] = useState<string>("")
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmitGift = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if(!giftName) return
+    if (!giftName) return
     setGifts([...gifts, giftName])
     setGiftName("")
   }
 
   const deleteGift = (giftName: string) => {
     setGifts(gifts.filter(gift => gift !== giftName))
-  } 
+  }
 
   const deleteAllGifts = () => {
     setGifts([])
   }
 
   return (
-    <div className={`App min-h-screen grid place-items-center bg-[url(./assets/christmas-bg.webp)]`}>
-      <div className="bg-red-900 max-w-md p-6 text-start rounded-md">
-        <form onSubmit={handleSubmit} className="flex items-end">
-          <div className="font-bold text-white flex flex-col">
-            <label htmlFor="new-gift">Your new gift...</label>
+    <div className="App min-h-screen grid place-items-center bg-[url('./assets/christmas-bg.webp')]">
+      <div className="bg-red-800 p-8 rounded-md max-w-sm w-full">
+        <form onSubmit={handleSubmitGift} className='flex items-end'>
+          <div className="flex flex-col">
+            <label htmlFor="next-gift" className="font-bold">Add a new gift!</label>
             <input 
-              value={giftName} 
-              onChange={(e) => setGiftName(e.target.value)} 
+              onChange={(e) => setGiftName(e.target.value)}
+              value={giftName}
               type="text" 
-              id="new-gift" 
-              className="bg-green-900 rounded-md py-1 px-42"
+              id="next-gift" 
+              className="bg-green-900 rounded-md py-1 px-4"
             />
           </div>
-          <input type="submit" className="bg-green-900 font-bold px-2 py-1 rounded-md ml-3" />
+          <input type="submit" className="ml-6 bg-green-900 px-3 py-1 rounded-md cursor-pointer hover:bg-green-800 transition-colors font-bold" value={"Add!"} /> 
         </form>
-        <ul className="my-6">
+        <ul className="my-4 min-h-[170px]">
           {
-            gifts.length ?
-            <h2 className="font-bold text-3xl mb-4">My gifts:</h2>
+            gifts.length ? 
+            <Heading text="Your Gifts:" styles="font-bold text-2xl mt-4 mb-2" />
             :
-            <h2 className="font-bold text-3xl mb-4">No gifts!</h2>
+            <Heading text="No gifts! Add a new one." styles="font-bold text-2xl mt-4 text-center" />
           }
           {
             gifts.map(gift => {
               return(
                 <li key={gift} className="flex items-center font-bold">
                   <ChristmasIcon />
-                  <span className="flex-grow ml-8">{gift}</span>
+                  <p className="ml-10 flex-grow">{gift}</p>
                   <button onClick={() => deleteGift(gift)}>
                     <TrashIcon />
                   </button>
@@ -60,14 +59,22 @@ function App() {
             })
           }
         </ul>
-        <button 
-          onClick={deleteAllGifts}
-          className="bg-green-900 font-bold py-1 w-full rounded-md"
-        >
-          Delete All!
+        <button onClick={deleteAllGifts} className="w-full bg-green-900 hover:bg-green-800 transition-colors py-2 rounded-md font-bold text-lg">
+          Delete All Gifts!
         </button>
       </div>
     </div>
+  )
+}
+
+interface HeadingProps {
+  text: string,
+  styles?: string
+}
+
+const Heading = ({text, styles}: HeadingProps) => {
+  return(
+    <h2 className={styles}>{text}</h2>
   )
 }
 
